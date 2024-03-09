@@ -17,7 +17,7 @@ Welcome to the official repository for the Audible algorithm, presented in our A
 ## Software Requirements
 
 - Tested environments: macOS Sonoma 14.2, CentOS 7.9.2009, and Ubuntu 18.04 LTS. It may work on other Linux distributions but has not been tested.
-- Compatible with Python 3.6 and 3.9.
+- Compatible with Python 3.x, and tested with 3.6 and 3.9.
 - Installation of Python modules listed in `requirements.txt` is necessary:
   ```bash
   pip install -r requirements.txt
@@ -25,7 +25,7 @@ Welcome to the official repository for the Audible algorithm, presented in our A
 
 ## Preparing the Datasets
 - Download the required datasets from the provided link.
-- Process each dataset using the steps outlined in `src/Data_processing.ipynb`. This notebook details each step required to prepare the data for simulation. Processed files will be saved to the `data/` directory.
+- Process 2021 burstable dataset `BurstableVMs_2021_Data.parquet` using the steps outlined in `src/Data_processing.ipynb`. This notebook details each step required to prepare the data for simulation. Processed files will be saved to the `data/` directory.
 
 ## Evaluation Setup
 - Use `run_simulator.ipynb` to generate simulation parameter files through its GUI interface. These files are saved in the `simulation_param_files/` directory.
