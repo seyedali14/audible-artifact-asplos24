@@ -25,6 +25,7 @@ Welcome to the official repository for the Audible algorithm, presented in our A
 
 ## Preparing the Datasets
 - Download the required datasets from the provided link.
+- Please note that the datasets are stored in Parquet format, which can demand a significant amount of memory for loading in entirety. Our testing on a system equipped with 32GB of RAM indicated the feasibility of loading one dataset entirely at a time.
 - Process 2021 burstable dataset `BurstableVMs_2021_Data.parquet` using the steps outlined in `src/Data_processing.ipynb`. This notebook details each step required to prepare the data for simulation. Processed files will be saved to the `data/` directory.
 
 ## Evaluation Setup
