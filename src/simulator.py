@@ -104,9 +104,9 @@ class Simulation:
         
     def _report_usage_violation(self, time_idx, print_bool = False):
         steady_state_time = self.params['steady_state_time']
-        avg_usage = np.mean([np.mean(server.server['usage'][time_idx-steady_state_time:time_idx]) for server in self.servers])
+        avg_usage = np.mean([np.mean(server.server['usage'][time_idx-steady_state_time:time_idx])*100/self.params['server_capacity'] for server in self.servers])
         if print_bool:
-            print('Average utilization accross all servers:', avg_usage)
+            print('Average utilization (%) accross all servers:', avg_usage)
         temp = np.array([len(np.where(server.server['usage'][time_idx-steady_state_time:time_idx] >= server.server['capacity'])[0])/steady_state_time for server in self.servers])
         num_servers_with_severe_violation = len(np.where(temp>self.servers[0].server['acceptable_violation'])[0])
         if print_bool:
