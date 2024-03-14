@@ -1,6 +1,6 @@
 {
     "rand_seed": 1,
-    "algorithm_name": "gaussian",
+    "algorithm_name": "CLT",
     "ds_name": "2021_burstable",
     "num_arrival_vms_per_time_idx": 2,
     "time_bound": 86400,

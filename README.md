@@ -31,7 +31,7 @@ Welcome to the official repository for the Audible algorithm, presented in our A
 - Use `run_simulator.ipynb` to generate simulation parameter files through its GUI interface. These files are saved in the `simulation_param_files/` directory.
 - The JSON simulation param file names reflect their content for easier identification.
 
-# Running Simulations
+## Running Simulations
 To execute a simulation, provide the generated simulation parameter file to `main.py`:
 ```
 ./src/main.py simulation_params/[Name of the simulation parameter file]
@@ -42,6 +42,31 @@ To execute a simulation, provide the generated simulation parameter file to `mai
 ## Collecting Results
 Output for each simulation is saved in a directory named after the algorithm in the parameter file.
 Results include a `.feather`` file with CPU usage and carry-overs for each server and a `.npy` file containing a dictionary with the simulation parameters and the number of VMs rejected by the algorithm.
+- Examples illustrating how to read and interpret the simulation results can be found in `read_simulation_result.ipynb`.
+
+# Reproducing Results in the Paper
+To produce the results presented in the paper, a comprehensive series of simulations was conducted. The parameter files required for these simulations are created in the section titled "Simulation Parameter Values for the ASPLOS24 Paper" within the `run_simulator.ipynb` file. Additionally, a summary of the simulation configuration parameters utilized in the paper is provided below:
+
+
+| Configuration Key                          | Values                                            | Description                                                                                                   |
+|--------------------------------------------|---------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| `rand_seed`                                | 0, 1, 2, 3, ...                                   | Specifies the seed value to shuffle the order of arriving VMs for simulation.                                 |
+| `algorithm_name`                           | "audible", "oversubscription oracle", "CLT", "rc" | Specifies the name of the algorithm being used.                                                               |
+| `ds_name`                                  | "2021_burstable" or "2021_regular"                | Specifies the dataset name.                                                                                   |
+| `num_arrival_vms_per_time_idx`             | A positive value                                  | Specifies how many VMs are placed at each simulation time point, varies depending on the algorithm.           |
+| `time_bound`                               | 86400 \*                                            | Specifies the number of simulation time points, simulating 5 minutes in reality. 86400 reflects 10 months.    |
+| `first_model`                              | Varies by algorithm                               | Specifies the first model to be used for each algorithm upon VM arrival based on its type.                    |
+| `prediction_type`                          | "Oracle" or "est"                                 | Specifies the prediction type.                                                                                |
+| `lb_name`                                  | "worst-fit_usage" \*                                | Specifies the name of the load balancer. Fixed to Worst Fit algorithm according to the servers usage.                                          |
+| `(number_of_servers, server_capacity)`     | (1008, 36), (756, 48), (567, 64)                   | Specifies the number of servers and the number of cores in each server. Fixed total core capacity for each of the setups.                                      |
+| `acceptable_violation`                     | 0.005, 0.01, 0.025, and 0.05                      | Specifies the target violation that each algorithm tries to achieve.                                          |
+| `retreat_num_samples`                      | 0 \*                                                | Specifies the number of simulation points to stop placing VMs on a server after a past violation.             |
+| `drop`                                     | True  \*                                            | If set to "False", allows rejecting VMs for placement. Set to "true" to always accept VMs for placement.      |
+| `steady_state_time`                        | 2016 \*                        | Specifies the steady state time to be used for reporting results, using the last week or 2016 simulation points.|
+
+\* Constant across simulations
+
+
 
 ## Citing Our Work
 Please reference our ASPLOS 2024 paper in your work. [Will update citation details here later].

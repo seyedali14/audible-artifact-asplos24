@@ -20,7 +20,7 @@ def generate_an_example_simulation_params(fn = 'simulation_params_example.json')
     import json
     config_dict = {
         'rand_seed': 0,
-        'algorithm_name': 'baseline-coef',
+        'algorithm_name': 'oversubscription-oracle',
         'ds_name': '2021_burstable',
         'num_arrival_vms_per_time_idx': 2,
         'time_bound': 86400,

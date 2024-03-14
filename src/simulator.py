@@ -83,7 +83,7 @@ class Simulation:
                         return 'failed' 
                     else:
                         self.dropped_vmids.append((time_idx, vmid))
-            if self.params['algorithm_name'] == 'baseline-coef' and time_idx>0 and time_idx%2016 == 0 and self._report_usage_violation(time_idx)[1] > 0:
+            if self.params['algorithm_name'] == 'oversubscription-oracle' and time_idx>0 and time_idx%2016 == 0 and self._report_usage_violation(time_idx)[1] > 0:
                 return 'failed'
                 
         # Check for carry overs
@@ -94,7 +94,7 @@ class Simulation:
         print('length of dropped_vmids for arrival ', self.params['num_arrival_vms_per_time_idx'], ' is ', len(self.dropped_vmids))
         avg_usage, num_servers_with_extreme_viol = self._report_usage_violation(time_idx, print_bool = True)
         
-        if self.params['algorithm_name'] == 'baseline-coef' and num_servers_with_extreme_viol > 0: # only for baseline-coef to make it genie-aided (basically it says if baseline-coef experience violation above the threshold, consider it failed)
+        if self.params['algorithm_name'] == 'oversubscription-oracle' and num_servers_with_extreme_viol > 0: # only for oversubscription-oracle to make it genie-aided (basically it says if oversubscription-oracle experience violation above the threshold, consider it failed)
             return 'failed'
         
         # save result
@@ -138,9 +138,9 @@ class Simulation:
         best_fit_bool, lb_metric = self.params['lb_name'].split('_', 1)
         best_fit_bool = True if 'best-fit' == best_fit_bool else False
         # create a set of bools to speed up the program and avoid recording redundant info
-        record_mean_bool = True if (self.params['algorithm_name'] in ['baseline-coef', 'rc', 'gaussian', 'B.E.']) else False
-        record_variance_bool = True if (self.params['algorithm_name'] in ['gaussian', 'B.E.']) else False
-        record_baselines_bool = True if ('baseline' in lb_metric) else False# or (self.params['algorithm_name'] in ['baseline-coef']) else False
+        record_mean_bool = True if (self.params['algorithm_name'] in ['oversubscription-oracle', 'rc', 'CLT', 'B.E.']) else False
+        record_variance_bool = True if (self.params['algorithm_name'] in ['CLT', 'B.E.']) else False
+        record_baselines_bool = True if ('baseline' in lb_metric) else False# or (self.params['algorithm_name'] in ['oversubscription-oracle']) else False
         record_third_mom_bool = True if self.params['algorithm_name'] == 'B.E.' else False
         #record_bools as dict
         record_bools = {'record_number_lr_bool': False, 'record_number_sr_bool': False, 'record_usage_bool': True,
@@ -159,7 +159,7 @@ class Simulation:
         """
         Return the Sorted list of the servers based on the load-balancing algorithm in lb_name
         """
-        if 'mean_variance' == self.lb_metric: # for gaussian and audible
+        if 'mean_variance' == self.lb_metric: # for CLT and audible
             sorted_server_load_idx = [(self.servers[server_idx].server['mean'][time_idx] + (self.servers[server_idx].server['variance'][time_idx]**0.5), server_idx) for server_idx in range(len(self.servers))]
         else:
             sorted_server_load_idx = [(self.servers[server_idx].server[self.lb_metric][time_idx], server_idx) for server_idx in range(len(self.servers))]
@@ -208,20 +208,3 @@ class Simulation:
             np.save(location + 'small_' + fn + '_params.npy', param_result , allow_pickle = True)
 
 # %%
-a = Simulation({
-    "rand_seed": 1,
-    "algorithm_name": "audible",
-    "ds_name": "2021_burstable",
-    "num_arrival_vms_per_time_idx": 4,
-    "time_bound": 86400,
-    "first_model": 0.95,
-    "prediction_type": "est",
-    "lb_name": "worst-fit_usage",
-    "number_of_servers": 50,
-    "server_capacity": 48,
-    "acceptable_violation": 0.01,
-    "retreat_num_samples": 0,
-    "drop": True,
-    "steady_state_time": 2016
-}, {})
-a.run_simulation()

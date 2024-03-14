@@ -1,6 +1,6 @@
 {
     "rand_seed": 1,
-    "algorithm_name": "baseline-coef",
+    "algorithm_name": "oversubscription-oracle",
     "ds_name": "2021_burstable",
     "num_arrival_vms_per_time_idx": 2,
     "time_bound": 86400,

@@ -7,14 +7,14 @@ import pandas as pd
 class SchedulerFactory:
     @staticmethod
     def create_scheduler(scheduler_type, data_files, params):
-        if scheduler_type == 'gaussian':
-            return GaussianScheduler(data_files, params)
+        if scheduler_type == 'CLT':
+            return CLTScheduler(data_files, params)
         elif scheduler_type == 'rc':
             return ResourceCentralScheduler(data_files, params)
         elif scheduler_type == 'audible':
             return AudibleScheduler(data_files, params)
-        elif scheduler_type == 'baseline-coef':
-            return BaselineCoefScheduler(data_files, params)
+        elif scheduler_type == 'oversubscription-oracle':
+            return OversubscriptionOracleScheduler(data_files, params)
         else:
             raise ValueError(f"Unsupported scheduler type: {scheduler_type}")
 
@@ -35,13 +35,13 @@ class Scheduler:
         raise NotImplementedError("Subclasses can implement modify_record_bools method")
         
 
-class GaussianScheduler(Scheduler):
+class CLTScheduler(Scheduler):
     def __init__(self, data_files, params):
         super().__init__(data_files, params)
         self._gen_esential_data()
 
     def _gen_esential_data(self):
-        # Initialize parameters specific to Gaussian algorithm
+        # Initialize parameters specific to CLT algorithm
         self.NORMAL_THRESHOLDS = {self.params['acceptable_violation']: norm().ppf( 1 - self.params['acceptable_violation'])}
         # standard normal loolup table
         self.SN_LOOKUP_TABLE = np.load(PROJECT_DIR + 'data/' + 'standard_lookup_table_precision_{}.npy'.format(6), allow_pickle = True).reshape(1, )[0] # precision = 6
@@ -63,7 +63,7 @@ class GaussianScheduler(Scheduler):
     
     
     def run_algorithm(self, time_idx, server, vmid):
-        # Implement Gaussian scheduling algorithm
+        # Implement CLT scheduling algorithm
         new_variance = server.server['variance'][time_idx] + self.data_files['vmid_to_avg'][vmid][0]
         new_mean = server.server['mean'][time_idx] + self.data_files['vmid_to_var'][vmid][0]
         new_std = max(0.0000000000001, new_variance**0.5)
@@ -138,7 +138,7 @@ class AudibleScheduler(Scheduler):
     
     
     def run_algorithm(self, time_idx, server, vmid):
-        # Implement baseline-coef Audible algorithm
+        # Implement Audible algorithm
         baseline = self.data_files['vmid_to_baseline'][vmid]
 
         if server.server['cpu_usage_pdf'][-1] > server.server['acceptable_violation']:
@@ -180,7 +180,7 @@ class AudibleScheduler(Scheduler):
         return np.load(PROJECT_DIR + 'data/probability_density_training_vms_per_{}_{}.npy'.format(size_str, self.params['ds_name']), allow_pickle = True).reshape(1, )[0]
     
 
-class BaselineCoefScheduler(Scheduler):
+class OversubscriptionOracleScheduler(Scheduler):
     def __init__(self, data_files, params):
         super().__init__(data_files, params)
         self._gen_esential_data()
@@ -191,7 +191,7 @@ class BaselineCoefScheduler(Scheduler):
         self.data_files['vmid_to_avg'] = {vmid: self.allocated_cores_per_vmid[vmid]*np.ones(len(self.data_files['vmid_to_trace'][vmid])) for vmid in self.data_files['vmid_to_trace']}    
         
     def run_algorithm(self, time_idx, server, vmid):
-        # Implement baseline-coef scheduling algorithm
+        # Implement oversubscription-oracle scheduling algorithm
         return server.server['mean'][time_idx] + self.allocated_cores_per_vmid[vmid] <= server.server['capacity']
     
     def _get_allocated_cores(self):
