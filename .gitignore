@@ -1,8 +1,12 @@
 src/__pycache__
-results/
+results/oversubscription-oracle/*
+results/CLT/*
+results/rc/*
+results/audible/*
 data/*
 simulation_param_files/*
 
+!results/audible/small_*_*_2021_burstable_269_86400_0.95_oracle_worst-fit_usage_756_*_0.01_0_True_2016.feather
 !simulation_param_files/1_*_2021_burstable_2_86400_*_worst-fit_usage_10_48_0.01_0_True_2016.json
 !simulation_param_files/simulation_params_example.json
 # !data/BurstableVMs_2021_Data.parquet
