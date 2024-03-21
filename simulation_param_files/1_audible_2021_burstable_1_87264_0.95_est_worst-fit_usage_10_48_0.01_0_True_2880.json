@@ -1,0 +1,16 @@
+{
+    "rand_seed": 1,
+    "algorithm_name": "audible",
+    "ds_name": "2021_burstable",
+    "num_arrival_vms_per_time_idx": 1,
+    "time_bound": 87264,
+    "first_model": 0.95,
+    "prediction_type": "est",
+    "lb_name": "worst-fit_usage",
+    "number_of_servers": 10,
+    "server_capacity": 48,
+    "acceptable_violation": 0.01,
+    "retreat_num_samples": 0,
+    "drop": true,
+    "steady_state_time": 2880
+}
