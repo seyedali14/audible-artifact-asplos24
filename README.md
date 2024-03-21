@@ -55,7 +55,7 @@ To produce the results presented in the paper, a comprehensive series of simulat
 | `algorithm_name`                           | "audible", "oversubscription oracle", "CLT", "rc" | Specifies the name of the algorithm being used.                                                               |
 | `ds_name`                                  | "2021_burstable" or "2021_regular"                | Specifies the dataset name.                                                                                   |
 | `num_arrival_vms_per_time_idx`             | A positive value                                  | Specifies how many VMs are placed at each simulation time point, varies depending on the algorithm.           |
-| `time_bound`                               | 86400 \*                                            | Specifies the number of simulation time points, simulating 5 minutes in reality. 86400 reflects 10 months.    |
+| `time_bound`                               | 87264 \*                                            | Specifies the number of simulation time points, simulating 5 minutes in reality. 87264 reflects almost 10 months.    |
 | `first_model`                              | Varies by algorithm                               | Specifies the first model to be used for each algorithm upon VM arrival based on its type.                    |
 | `prediction_type`                          | "Oracle" or "est"                                 | Specifies the prediction type.                                                                                |
 | `lb_name`                                  | "worst-fit_usage" \*                                | Specifies the name of the load balancer. Fixed to Worst Fit algorithm according to the servers usage.                                          |
@@ -63,7 +63,7 @@ To produce the results presented in the paper, a comprehensive series of simulat
 | `acceptable_violation`                     | 0.005, 0.01, 0.025, and 0.05                      | Specifies the target violation that each algorithm tries to achieve.                                          |
 | `retreat_num_samples`                      | 0 \*                                                | Specifies the number of simulation points to stop placing VMs on a server after a past violation.             |
 | `drop`                                     | True  \*                                            | If set to "False", allows rejecting VMs for placement. Set to "true" to always accept VMs for placement.      |
-| `steady_state_time`                        | 2016 \*                        | Specifies the steady state time to be used for reporting results, using the last week or 2016 simulation points.|
+| `steady_state_time`                        | 2880 \*                        | Specifies the steady state time to be used for reporting results, using the last 10 days or 2880 simulation points.|
 
 \* Constant across simulations
 
