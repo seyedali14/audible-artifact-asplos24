@@ -42,7 +42,7 @@ To execute a simulation, provide the generated simulation parameter file to `mai
 
 ## Collecting Results
 Output for each simulation is saved in a directory named after the algorithm in the parameter file.
-Results include a `.feather`` file with CPU usage and carry-overs for each server and a `.npy` file containing a dictionary with the simulation parameters and the number of VMs rejected by the algorithm.
+Results include a `.feather` file with CPU usage and carry-overs for each server and a `.npy` file containing a dictionary with the simulation parameters and the number of VMs rejected by the algorithm.
 - Examples of reading and interpreting result files are provided in `read_simulation_result.ipynb`.
 
 ## Reproducing Paper Results
